@@ -18,13 +18,20 @@ const beforeEach = (to, from, next) => {
     store.dispatch('setToken', to.query.token).then(() => {
       store.dispatch('checkUserToken')
         .then(() => {
+          var nurl = to.path
+          var delim = '?'
+          for (var key in to.query) {
+            if (key !== 'from' && key !== 'token') {
+              nurl = nurl + delim + key + '=' + to.query[key]
+              delim = '&'
+            }
+          }
           // There is a token and it is valid
-          next() // can access the route
+          next(nurl) // can access the route
         })
         .catch(() => {
           // No token, or it is invalid
           // next() // redirect to login
-          // console.log(to)
           var callback = 'http://localhost:8081' + to.fullPath
           window.location.href = 'http://localhost:8080/sso/signin?' + 'returl=' + encodeURIComponent(callback)
         })
@@ -42,7 +49,6 @@ const beforeEach = (to, from, next) => {
     .catch(() => {
       // No token, or it is invalid
       // next() // redirect to login
-      // console.log(to)
       var callback = 'http://localhost:8081' + to.fullPath
       window.location.href = 'http://localhost:8080/sso/signin?' + 'returl=' + encodeURIComponent(callback)
     })
