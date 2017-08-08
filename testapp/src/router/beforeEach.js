@@ -1,4 +1,5 @@
 import store from '../store'
+import login from '../login'
 
 const needAuth = auth => auth === true
 
@@ -18,6 +19,8 @@ const beforeEach = (to, from, next) => {
     store.dispatch('setToken', to.query.token).then(() => {
       store.dispatch('checkUserToken')
         .then(() => {
+          // hide the from & token
+          // TODO: is there a more elegant method?
           var nurl = to.path
           var delim = '?'
           for (var key in to.query) {
@@ -32,8 +35,7 @@ const beforeEach = (to, from, next) => {
         .catch(() => {
           // No token, or it is invalid
           // next() // redirect to login
-          var callback = 'http://localhost:8081' + to.fullPath
-          window.location.href = 'http://localhost:8080/sso/signin?' + 'returl=' + encodeURIComponent(callback)
+          login.ssoLogin(to.fullPath)
         })
     })
   }
@@ -49,8 +51,7 @@ const beforeEach = (to, from, next) => {
     .catch(() => {
       // No token, or it is invalid
       // next() // redirect to login
-      var callback = 'http://localhost:8081' + to.fullPath
-      window.location.href = 'http://localhost:8080/sso/signin?' + 'returl=' + encodeURIComponent(callback)
+      login.ssoLogin(to.fullPath)
     })
 }
 
