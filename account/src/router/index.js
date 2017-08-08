@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import beforeEach from './beforeEach'
+// import beforeEach from './beforeEach'
 import Hello from '@/components/Hello'
 import { routes as app } from '../components'
 
@@ -17,6 +17,6 @@ const router = new Router({
   mode: 'history'
 })
 
-router.beforeEach(beforeEach)
+// router.beforeEach(beforeEach)
 
 export default router

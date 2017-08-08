@@ -24,10 +24,7 @@ const beforeEach = (to, from, next) => {
     })
     .catch(() => {
       // No token, or it is invalid
-      // next() // redirect to login
-      // console.log(to)
-      var callback = 'http://localhost:8081' + to.fullPath
-      window.location.href = 'http://localhost:8080/sso/login?' + 'returl=' + encodeURIComponent(callback)
+      next() // redirect to login
     })
 }
 
